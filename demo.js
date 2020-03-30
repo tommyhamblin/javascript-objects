@@ -7,15 +7,34 @@
     age: 23,
     isAdult() { return this.age >= 18; }
   };
-  display(person1.isAdult());
 
-  let person2 = {
-    firstName: 'Joe',
-    lastName: 'Bloggs',
-    age: 17,
-    isAdult() { return this.age >= 18; }
+  // Object.defineProperty(person1, 'firstName', {enumerable: false});
+
+  for (let propertyName in person1) {
+    display(propertyName + ': ' + person1[propertyName]);
   }
-  display(person2.isAdult());
+
+  // delete person1.lastName;
+  // display(Object.keys(person1));
+  // display(JSON.stringify(person1));
+
+  Object.defineProperty(person1, 'fullName', {
+    get: function() {
+      return this.firstName + ' ' + this.lastName;
+    },
+    set: function(value) {
+      var nameParts = value.split(' ');
+      this.firstName = nameParts[0];
+      this.lastName = nameParts[1];
+    }
+  });
+  person1.fullName = 'Joe Bloggs';
+  display(person1.fullName);
+
+  // Object.defineProperty(person1, 'name', {writable: false});
+  // Object.freeze(person1.name);
+  // person1.name.firstName = "Joe";
+  // display(person1.name);
 
   let healthStats = {
     height: 70,
